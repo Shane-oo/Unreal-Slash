@@ -17,13 +17,6 @@ AItem::AItem()
 void AItem::BeginPlay()
 {
     Super::BeginPlay();
-
-    const FVector Location = GetActorLocation();
-    const FVector Forward = GetActorForwardVector();
-
-    DRAW_SPHERE(Location);
-    DRAW_VECTOR(Location, Location + Forward * 100.f);
-    DRAW_BOX(Location + Forward * 101.f);
 }
 
 // #endregion
@@ -35,4 +28,16 @@ void AItem::BeginPlay()
 void AItem::Tick(const float DeltaTime)
 {
     Super::Tick(DeltaTime);
+
+    RunningTime += DeltaTime;
+
+    const float DeltaZ = Amplitude * FMath::Sin(RunningTime * TimeConstant);
+
+    AddActorWorldOffset(FVector(0.f, 0.f, DeltaZ));
+
+    const FVector Location = GetActorLocation();
+    DRAW_SPHERE_SINGLE_FRAME(Location);
+    DRAW_VECTOR_SINGLE_FRAME(Location, Location + GetActorForwardVector() * 100.f);
 }
+
+// #endregion
