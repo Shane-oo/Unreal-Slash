@@ -21,7 +21,12 @@ protected:
     virtual void BeginPlay() override;
 
 private:
+    UPROPERTY(VisibleAnywhere)
     float RunningTime = 0.f;
-    const float Amplitude = 0.25f;
-    const float TimeConstant = 0.5f;
+
+    UPROPERTY(EditAnywhere) // Blueprints
+    float Amplitude = 0.25f;
+
+    UPROPERTY(EditAnywhere) // Instances
+    float TimeConstant = 0.5f;
 };
