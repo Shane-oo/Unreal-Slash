@@ -8,3 +8,4 @@
 DRAW_LINE(StartLocation, EndLocation); \
 DRAW_POINT(EndLocation); \
 }
+#define DRAW_BOX(Location) if(const UWorld* World = GetWorld()) DrawDebugBox(World, Location, FVector(10, 10, 10), FColor::Red, true);

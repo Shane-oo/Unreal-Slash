@@ -23,6 +23,7 @@ void AItem::BeginPlay()
 
     DRAW_SPHERE(Location);
     DRAW_VECTOR(Location, Location + Forward * 100.f);
+    DRAW_BOX(Location + Forward * 101.f);
 }
 
 // #endregion
