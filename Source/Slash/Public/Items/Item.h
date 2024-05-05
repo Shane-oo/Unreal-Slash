@@ -20,13 +20,28 @@ protected:
     // Called when the game starts or when spawned
     virtual void BeginPlay() override;
 
-private:
-    UPROPERTY(VisibleAnywhere)
-    float RunningTime = 0.f;
-
-    UPROPERTY(EditAnywhere) // Blueprints
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Sin Pararameters")
     float Amplitude = 0.25f;
 
-    UPROPERTY(EditAnywhere) // Instances
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Sin Pararameters")
     float TimeConstant = 0.5f;
+
+    UFUNCTION(BlueprintPure)
+    float TransformSin() const;
+
+    UFUNCTION(BlueprintPure)
+    float TransformCos() const;
+
+    template <typename T>
+    static T Avg(T First, T Second);
+
+private:
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
+    float RunningTime = 0.f;
 };
+
+template <typename T>
+T AItem::Avg(T First, T Second)
+{
+    return (First + Second) / 2;
+}
