@@ -38,6 +38,9 @@ protected:
 private:
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
     float RunningTime = 0.f;
+
+    UPROPERTY(VisibleAnywhere)
+    UStaticMeshComponent* ItemMesh;
 };
 
 template <typename T>
