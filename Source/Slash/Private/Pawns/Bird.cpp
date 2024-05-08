@@ -1,13 +1,19 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
-
 #include "Pawns/Bird.h"
+
+#include "Components/CapsuleComponent.h"
+
 // #region Constructors
 
 ABird::ABird()
 {
-    // Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
+    // Set this pawn to call Tick() every frame.
     PrimaryActorTick.bCanEverTick = true;
+
+    Capsule = CreateDefaultSubobject<UCapsuleComponent>(TEXT("Capsule"));
+    Capsule->SetCapsuleHalfHeight(20.f);
+    Capsule->SetCapsuleRadius(15.f);
+
+    SetRootComponent(Capsule);
 }
 
 // #endregion
