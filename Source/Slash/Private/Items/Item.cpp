@@ -43,6 +43,9 @@ void AItem::Tick(const float DeltaTime)
     Super::Tick(DeltaTime);
 
     RunningTime += DeltaTime;
+
+    constexpr int MovementRate = 50;
+    AddActorWorldRotation(FRotator(0, MovementRate * DeltaTime, 0));
 }
 
 // #endregion
