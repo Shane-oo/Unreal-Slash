@@ -16,6 +16,8 @@ ABird::ABird()
 
     BirdMesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("BirdMesh"));
     BirdMesh->SetupAttachment(GetRootComponent());
+
+    AutoPossessPlayer = EAutoReceiveInput::Player0;
 }
 
 // #endregion
@@ -27,6 +29,11 @@ void ABird::BeginPlay()
     Super::BeginPlay();
 }
 
+void ABird::MoveForward(float Value)
+{
+    UE_LOG(LogTemp, Warning, TEXT("Value: %f"), Value);
+}
+
 // #endregion
 
 // #region Public Methods
@@ -35,6 +42,8 @@ void ABird::BeginPlay()
 void ABird::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
     Super::SetupPlayerInputComponent(PlayerInputComponent);
+
+    PlayerInputComponent->BindAxis(FName("MoveForward"), this, &ABird::MoveForward);
 }
 
 void ABird::Tick(const float DeltaTime)
