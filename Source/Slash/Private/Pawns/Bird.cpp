@@ -4,6 +4,8 @@
 #include "Components/SkeletalMeshComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "EnhancedInputComponent.h"
+#include "Camera/CameraComponent.h"
+#include "GameFramework/SpringArmComponent.h"
 
 // #region Constructors
 
@@ -18,7 +20,15 @@ ABird::ABird()
     SetRootComponent(Capsule);
 
     BirdMesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("BirdMesh"));
-    BirdMesh->SetupAttachment(GetRootComponent());
+    BirdMesh->SetupAttachment(Capsule);
+
+    SpringArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("SpringArm"));
+    SpringArm->SetupAttachment(Capsule);
+    SpringArm->TargetArmLength = 300.f;
+
+    ViewCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("ViewCamera"));
+    ViewCamera->SetupAttachment(SpringArm);
+    
 
     AutoPossessPlayer = EAutoReceiveInput::Player0;
 }
@@ -43,10 +53,10 @@ void ABird::BeginPlay()
 
 void ABird::Move(const FInputActionValue& Value)
 {
-    const bool CurrentValue = Value.Get<bool>();
-    if (CurrentValue)
+    if (const float DirectionValue = Value.Get<float>(); DirectionValue != 0.0f)
     {
-        UE_LOG(LogTemp, Warning, TEXT("IA_Move triggered"));
+        const FVector Forward = GetActorForwardVector();
+        AddMovementInput(Forward, DirectionValue);
     }
 }
 

@@ -44,6 +44,8 @@ void AItem::Tick(const float DeltaTime)
 
     constexpr int MovementRate = 50;
     AddActorWorldRotation(FRotator(0, MovementRate * DeltaTime, 0));
+
+    AddActorWorldOffset(FVector(0.f, TransformCos(), TransformSin()));
 }
 
 // #endregion

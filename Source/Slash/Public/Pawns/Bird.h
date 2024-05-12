@@ -5,11 +5,13 @@
 
 #include "Bird.generated.h"
 
+class UCameraComponent;
 // forward declaration
 class UCapsuleComponent;
 class USkeletalMeshComponent;
 class UInputMappingContext;
 class UInputAction;
+class USpringArmComponent;
 struct FInputActionValue;
 
 UCLASS()
@@ -40,4 +42,10 @@ private:
 
     UPROPERTY(VisibleAnywhere)
     USkeletalMeshComponent* BirdMesh;
+
+    UPROPERTY(VisibleAnywhere)
+    USpringArmComponent* SpringArm;
+
+    UPROPERTY(VisibleAnywhere)
+    UCameraComponent* ViewCamera;
 };
