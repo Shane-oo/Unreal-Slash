@@ -8,6 +8,9 @@
 // forward declaration
 class UCapsuleComponent;
 class USkeletalMeshComponent;
+class UInputMappingContext;
+class UInputAction;
+struct FInputActionValue;
 
 UCLASS()
 class SLASH_API ABird : public APawn
@@ -22,7 +25,14 @@ public:
 
 protected:
     virtual void BeginPlay() override;
-    void MoveForward(float Value);
+
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category ="Input")
+    UInputMappingContext* BirdMappingContext;
+
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input|Action")
+    UInputAction* MoveAction;
+
+    void Move(const FInputActionValue& Value);
 
 private:
     UPROPERTY(VisibleAnywhere)
