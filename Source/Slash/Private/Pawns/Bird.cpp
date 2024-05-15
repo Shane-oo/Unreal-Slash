@@ -28,7 +28,7 @@ ABird::ABird()
 
     ViewCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("ViewCamera"));
     ViewCamera->SetupAttachment(SpringArm);
-    
+
 
     AutoPossessPlayer = EAutoReceiveInput::Player0;
 }
@@ -60,6 +60,16 @@ void ABird::Move(const FInputActionValue& Value)
     }
 }
 
+void ABird::Look(const FInputActionValue& Value)
+{
+    const FVector2D LookAxis = Value.Get<FVector2D>();
+    if(GetController())
+    {
+        AddControllerYawInput(LookAxis.X);
+        AddControllerPitchInput(LookAxis.Y);
+    }
+}
+
 // #endregion
 
 // #region Public Methods
@@ -73,6 +83,7 @@ void ABird::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
     if (UEnhancedInputComponent* EnhancedInputComponent = CastChecked<UEnhancedInputComponent>(PlayerInputComponent))
     {
         EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &ABird::Move);
+        EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &ABird::Look);
     }
 }
 
