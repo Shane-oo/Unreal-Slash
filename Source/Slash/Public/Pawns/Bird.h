@@ -6,12 +6,13 @@
 #include "Bird.generated.h"
 
 class UCameraComponent;
+class USpringArmComponent;
 // forward declaration
 class UCapsuleComponent;
 class USkeletalMeshComponent;
 class UInputMappingContext;
 class UInputAction;
-class USpringArmComponent;
+
 struct FInputActionValue;
 
 UCLASS()

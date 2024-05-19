@@ -3,6 +3,12 @@
 
 #include "Characters/SlashCharacter.h"
 
+#include "EnhancedInputComponent.h"
+#include "EnhancedInputSubsystems.h"
+#include "Camera/CameraComponent.h"
+#include "GameFramework/CharacterMovementComponent.h"
+#include "GameFramework/SpringArmComponent.h"
+
 // #region Private Methods
 
 // #endregion
@@ -11,8 +17,25 @@
 
 ASlashCharacter::ASlashCharacter()
 {
-    // Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
     PrimaryActorTick.bCanEverTick = true;
+
+    bUseControllerRotationPitch = false;
+    bUseControllerRotationYaw = false;
+    bUseControllerRotationRoll = false;
+
+    UCharacterMovementComponent* CharacterMovementComponent = GetCharacterMovement();
+    // Rotate character with controls
+    CharacterMovementComponent->bOrientRotationToMovement = true; 
+    CharacterMovementComponent->RotationRate = FRotator(0.f, 400.f, 0.0f);
+
+    USceneComponent* Root = GetRootComponent();
+
+    SpringArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("SpringArm"));
+    SpringArm->SetupAttachment(Root);
+    SpringArm->TargetArmLength = 300.f;
+
+    ViewCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("ViewCamera"));
+    ViewCamera->SetupAttachment(SpringArm);
 }
 
 // #endregion
@@ -22,6 +45,39 @@ ASlashCharacter::ASlashCharacter()
 void ASlashCharacter::BeginPlay()
 {
     Super::BeginPlay();
+
+    if (const APlayerController* PlayerController = Cast<APlayerController>(GetController()))
+    {
+        if (UEnhancedInputLocalPlayerSubsystem* Subsystem =
+            ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PlayerController->GetLocalPlayer()))
+        {
+            Subsystem->AddMappingContext(SlashMappingContext, 0);
+        }
+    }
+}
+
+void ASlashCharacter::Move(const FInputActionValue& Value)
+{
+    const FVector2D MovementVector = Value.Get<FVector2D>();
+
+    const FRotator Rotation = GetControlRotation();
+    const FRotator YawRotation = FRotator(0.f, Rotation.Yaw, 0.0f);
+
+    // Forward/Backward
+    const FVector NormalisedForwardDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X);
+    AddMovementInput(NormalisedForwardDirection, MovementVector.Y);
+
+    // Left/Right
+    const FVector NormalisedRightDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);
+    AddMovementInput(NormalisedRightDirection, MovementVector.X);
+}
+
+void ASlashCharacter::Look(const FInputActionValue& Value)
+{
+    const FVector2D LookAxisVector = Value.Get<FVector2D>();
+
+    AddControllerYawInput(LookAxisVector.X);
+    AddControllerPitchInput(LookAxisVector.Y);
 }
 
 // #endregion
@@ -31,15 +87,18 @@ void ASlashCharacter::BeginPlay()
 void ASlashCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
     Super::SetupPlayerInputComponent(PlayerInputComponent);
+
+    // Set up actions
+    if (UEnhancedInputComponent* EnhancedInputComponent = CastChecked<UEnhancedInputComponent>(PlayerInputComponent))
+    {
+        EnhancedInputComponent->BindAction(MovementAction, ETriggerEvent::Triggered, this, &ASlashCharacter::Move);
+        EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &ASlashCharacter::Look);
+    }
 }
 
-void ASlashCharacter::Tick(float DeltaTime)
+void ASlashCharacter::Tick(const float DeltaTime)
 {
     Super::Tick(DeltaTime);
 }
 
 // #endregion
-
-
-
-
