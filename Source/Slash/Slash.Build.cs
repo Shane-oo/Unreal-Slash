@@ -4,11 +4,11 @@ using UnrealBuildTool;
 
 public class Slash: ModuleRules
 {
-	public Slash(ReadOnlyTargetRules Target): base(Target)
+	public Slash(ReadOnlyTargetRules target): base(target)
 	{
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 
-		PublicDependencyModuleNames.AddRange(new[] { "Core", "CoreUObject", "Engine", "InputCore", "EnhancedInput" });
+		PublicDependencyModuleNames.AddRange(new[] { "Core", "CoreUObject", "Engine", "InputCore", "EnhancedInput", "HairStrandsCore", "Niagara" });
 
 		PrivateDependencyModuleNames.AddRange(new string[] {});
 
