@@ -8,9 +8,8 @@
 
 class ASlashCharacter;
 class UCharacterMovementComponent;
-/**
- * 
- */
+
+
 UCLASS()
 class SLASH_API USlashAnimInstance : public UAnimInstance
 {
@@ -27,4 +26,7 @@ public:
 
     UPROPERTY(BlueprintReadOnly, Category= "Movement|Speed")
     float GroundSpeed;
+
+    UPROPERTY(BlueprintReadOnly, Category="Movement")
+    bool IsFalling;
 };
