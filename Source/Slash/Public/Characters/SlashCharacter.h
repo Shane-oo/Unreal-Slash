@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "InputActionValue.h"
 #include "GameFramework/Character.h"
 #include "SlashCharacter.generated.h"
 
@@ -38,6 +39,10 @@ protected:
     UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input|Action")
     UInputAction* LookAction;
     void Look(const FInputActionValue& Value);
+
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Input|Action")
+    UInputAction* JumpAction;
+
 private:
     UPROPERTY(VisibleAnywhere)
     USpringArmComponent* SpringArm;
