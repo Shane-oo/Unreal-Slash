@@ -1,5 +1,7 @@
 #include "Items/Item.h"
 
+#include "Components/SphereComponent.h"
+
 // #region Constructors
 AItem::AItem()
 {
@@ -7,7 +9,10 @@ AItem::AItem()
     PrimaryActorTick.bCanEverTick = true;
 
     ItemMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("ItemMeshComponent"));
-    RootComponent = ItemMesh;
+    SetRootComponent(ItemMesh);
+
+    SphereComponent = CreateDefaultSubobject<USphereComponent>(TEXT("SphereComponent"));
+    SphereComponent->SetupAttachment(GetRootComponent());
 }
 
 // #endregion
@@ -18,6 +23,9 @@ AItem::AItem()
 void AItem::BeginPlay()
 {
     Super::BeginPlay();
+
+    SphereComponent->OnComponentBeginOverlap.AddDynamic(this, &AItem::OnSphereOverlap);
+    SphereComponent->OnComponentEndOverlap.AddDynamic(this, &AItem::OnSphereEndOverlap);
 }
 
 float AItem::TransformSin() const
@@ -28,6 +36,27 @@ float AItem::TransformSin() const
 float AItem::TransformCos() const
 {
     return Amplitude * FMath::Cos(RunningTime * TimeConstant);;
+}
+
+void AItem::OnSphereOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
+    UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+{
+    const FString OtherActorName = OtherActor->GetName() + " On Begin Overlap";
+    if (GEngine)
+    {
+        GEngine->AddOnScreenDebugMessage(1, 3.f, FColor::Red, OtherActorName);
+    }
+    
+}
+
+void AItem::OnSphereEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
+    UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
+{
+    const FString OtherActorName = OtherActor->GetName() + " End Overlap";
+    if (GEngine)
+    {
+        GEngine->AddOnScreenDebugMessage(1, 3.f, FColor::Red, OtherActorName);
+    } 
 }
 
 // #endregion
