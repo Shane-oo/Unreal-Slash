@@ -22,10 +22,10 @@ protected:
     // Called when the game starts or when spawned
     virtual void BeginPlay() override;
 
-    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Sin Pararameters")
-    float Amplitude = 0.25f;
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Trig Pararameters")
+    float Amplitude = 0.1f;
 
-    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Sin Pararameters")
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Trig Pararameters")
     float TimeConstant = 0.5f;
 
     UFUNCTION(BlueprintPure)
@@ -38,11 +38,11 @@ protected:
     static T Avg(T First, T Second);
 
     UFUNCTION()
-    void OnSphereOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp,
+    virtual void OnSphereOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp,
                          int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 
     UFUNCTION()
-    void OnSphereEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
+    virtual void OnSphereEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
                             UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
 
 private:

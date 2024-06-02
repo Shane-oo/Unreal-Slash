@@ -30,12 +30,12 @@ void AItem::BeginPlay()
 
 float AItem::TransformSin() const
 {
-    return Amplitude * FMath::Sin(RunningTime * TimeConstant);;
+    return Amplitude * FMath::Sin(RunningTime * TimeConstant);
 }
 
 float AItem::TransformCos() const
 {
-    return Amplitude * FMath::Cos(RunningTime * TimeConstant);;
+    return Amplitude * FMath::Cos(RunningTime * TimeConstant);
 }
 
 void AItem::OnSphereOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
@@ -71,7 +71,7 @@ void AItem::Tick(const float DeltaTime)
 
     RunningTime += DeltaTime;
 
-    constexpr int MovementRate = 50;
+    constexpr int MovementRate = 75;
     AddActorWorldRotation(FRotator(0, MovementRate * DeltaTime, 0));
 
     AddActorWorldOffset(FVector(0.f, TransformCos(), TransformSin()));
