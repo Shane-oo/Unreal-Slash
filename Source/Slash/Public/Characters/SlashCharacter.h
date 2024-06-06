@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "ActionState.h"
-#include "CharacterState.h"
+#include "EquippedState.h"
 #include "InputActionValue.h"
 #include "GameFramework/Character.h"
 #include "SlashCharacter.generated.h"
@@ -34,7 +34,7 @@ public:
 
     FORCEINLINE void SetOverlappingItem(AItem* Item) { this->OverlappingItem = Item; };
 
-    FORCEINLINE ECharacterState GetCharacterState() const { return CharacterState; }
+    FORCEINLINE EEquippedState GetCharacterState() const { return EquippedState; }
 
 protected:
     virtual void BeginPlay() override;
@@ -69,7 +69,7 @@ private:
 
     FName RightHandSocket = FName("RightHandSocket");
 
-    ECharacterState CharacterState = ECharacterState::ECS_UnEquipped;
+    EEquippedState EquippedState = EEquippedState::EES_UnEquipped;
 
     UPROPERTY(BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
     EActionState ActionState = EActionState::EAS_UnOccupied;

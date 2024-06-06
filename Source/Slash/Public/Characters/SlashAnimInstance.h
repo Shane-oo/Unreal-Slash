@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "CharacterState.h"
+#include "EquippedState.h"
 #include "Animation/AnimInstance.h"
 #include "SlashAnimInstance.generated.h"
 

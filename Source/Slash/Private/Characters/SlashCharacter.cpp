@@ -11,6 +11,7 @@
 #include "GroomComponent.h"
 #include "Items/Weapons/Weapon.h"
 #include "Animation/AnimMontage.h"
+#include "Characters/EquippedState.h"
 
 // #region Private Methods
 
@@ -39,7 +40,7 @@ void ASlashCharacter::PlayAttackMontage() const
 
 bool ASlashCharacter::CanAttack() const
 {
-    return ActionState == EActionState::EAS_UnOccupied && CharacterState != ECharacterState::ECS_UnEquipped;
+    return ActionState == EActionState::EAS_UnOccupied && EquippedState != EEquippedState::EES_UnEquipped;
 }
 
 // #endregion
@@ -124,7 +125,7 @@ void ASlashCharacter::EKeyPressed(const FInputActionValue& Value)
     if (const AWeapon* OverlappingWeapon = Cast<AWeapon>(OverlappingItem))
     {
         OverlappingWeapon->Equip(GetMesh(), RightHandSocket);
-        CharacterState = ECharacterState::ECS_EquippedOneHandedWeapon;
+        EquippedState = EEquippedState::EES_EquippedOneHandedWeapon;
     }
 }
 
