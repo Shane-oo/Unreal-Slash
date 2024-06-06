@@ -15,6 +15,7 @@ class UCameraComponent;
 class USpringArmComponent;
 class UGroomComponent;
 class AItem;
+class UAnimMontage;
 
 UCLASS()
 class SLASH_API ASlashCharacter : public ACharacter
@@ -55,6 +56,10 @@ protected:
     UInputAction* EquipAction;
     void EKeyPressed(const FInputActionValue& Value);
 
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Input|Action")
+    UInputAction* AttackAction;
+    void Attack(const FInputActionValue& Value);
+
 private:
     FName RightHandSocket = FName("RightHandSocket");
 
@@ -74,4 +79,12 @@ private:
 
     UPROPERTY(VisibleAnywhere, Category = "Hair")
     UGroomComponent* Eyebrows;
+
+    // Animation Montages
+    FName Attack1 = FName("Attack1");
+
+    FName Attack2 = FName("Attack2");
+
+    UPROPERTY(EditDefaultsOnly, Category = "Montages")
+    UAnimMontage* AttackMontage;
 };

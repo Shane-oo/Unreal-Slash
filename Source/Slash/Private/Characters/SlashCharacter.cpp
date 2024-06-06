@@ -10,6 +10,7 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "GroomComponent.h"
 #include "Items/Weapons/Weapon.h"
+#include "Animation/AnimMontage.h"
 
 // #region Private Methods
 
@@ -27,7 +28,7 @@ ASlashCharacter::ASlashCharacter()
 
     UCharacterMovementComponent* CharacterMovementComponent = GetCharacterMovement();
     // Rotate character with controls
-    CharacterMovementComponent->bOrientRotationToMovement = true; 
+    CharacterMovementComponent->bOrientRotationToMovement = true;
     CharacterMovementComponent->RotationRate = FRotator(0.f, 400.f, 0.0f);
 
     USceneComponent* Root = GetRootComponent();
@@ -92,10 +93,33 @@ void ASlashCharacter::Look(const FInputActionValue& Value)
 
 void ASlashCharacter::EKeyPressed(const FInputActionValue& Value)
 {
-    if(const AWeapon* OverlappingWeapon = Cast<AWeapon>(OverlappingItem))
+    if (const AWeapon* OverlappingWeapon = Cast<AWeapon>(OverlappingItem))
     {
         OverlappingWeapon->Equip(GetMesh(), RightHandSocket);
         CharacterState = ECharacterState::ECS_EquippedOneHandedWeapon;
+    }
+}
+
+void ASlashCharacter::Attack(const FInputActionValue& Value)
+{
+    if (UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance(); AnimInstance
+        && AttackMontage)
+    {
+        AnimInstance->Montage_Play(AttackMontage);
+        FName SectionName = FName();
+
+        switch (FMath::RandRange(0, 1))
+        {
+        case 0:
+            SectionName = Attack1;
+            break;
+        case 1:
+            SectionName = Attack2;
+            break;
+        default:
+            break;
+        }
+        AnimInstance->Montage_JumpToSection(SectionName);
     }
 }
 
@@ -114,6 +138,8 @@ void ASlashCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComp
         EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &ASlashCharacter::Look);
         EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Triggered, this, &ACharacter::Jump);
         EnhancedInputComponent->BindAction(EquipAction, ETriggerEvent::Triggered, this, &ASlashCharacter::EKeyPressed);
+        EnhancedInputComponent->BindAction(AttackAction, ETriggerEvent::Triggered, this, &ASlashCharacter::Attack);
+
     }
 }
 
