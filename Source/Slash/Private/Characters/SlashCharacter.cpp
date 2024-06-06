@@ -9,6 +9,7 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "GroomComponent.h"
+#include "Items/Weapons/Weapon.h"
 
 // #region Private Methods
 
@@ -89,6 +90,14 @@ void ASlashCharacter::Look(const FInputActionValue& Value)
     AddControllerPitchInput(LookAxisVector.Y);
 }
 
+void ASlashCharacter::EKeyPressed(const FInputActionValue& Value)
+{
+    if(const AWeapon* OverlappingWeapon = Cast<AWeapon>(OverlappingItem))
+    {
+        OverlappingWeapon->Equip(GetMesh(), RightHandSocket);
+    }
+}
+
 // #endregion
 
 // #region Public Methods
@@ -103,17 +112,13 @@ void ASlashCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComp
         EnhancedInputComponent->BindAction(MovementAction, ETriggerEvent::Triggered, this, &ASlashCharacter::Move);
         EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &ASlashCharacter::Look);
         EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Triggered, this, &ACharacter::Jump);
+        EnhancedInputComponent->BindAction(EquipAction, ETriggerEvent::Triggered, this, &ASlashCharacter::EKeyPressed);
     }
 }
 
 void ASlashCharacter::Tick(const float DeltaTime)
 {
     Super::Tick(DeltaTime);
-}
-
-FName ASlashCharacter::GetRightHandSocket() const
-{
-    return RightHandSocket;
 }
 
 // #endregion

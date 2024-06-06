@@ -8,15 +8,6 @@ void AWeapon::OnSphereOverlap(UPrimitiveComponent* OverlappedComponent, AActor* 
                               const FHitResult& SweepResult)
 {
     Super::OnSphereOverlap(OverlappedComponent, OtherActor, OtherComp, OtherBodyIndex, bFromSweep, SweepResult);
-
-    if (const ASlashCharacter* SlashCharacter = Cast<ASlashCharacter>(OtherActor))
-    {
-        const FAttachmentTransformRules TransformRules(EAttachmentRule::SnapToTarget,
-                                                       EAttachmentRule::SnapToTarget,
-                                                       EAttachmentRule::SnapToTarget,
-                                                       false);
-        ItemMesh->AttachToComponent(SlashCharacter->GetMesh(), TransformRules, SlashCharacter->GetRightHandSocket());
-    }
 }
 
 void AWeapon::OnSphereEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
@@ -25,5 +16,17 @@ void AWeapon::OnSphereEndOverlap(UPrimitiveComponent* OverlappedComponent, AActo
     Super::OnSphereEndOverlap(OverlappedComponent, OtherActor, OtherComp, OtherBodyIndex);
 }
 
-
 // #endregion 
+
+// #region Public Methods
+
+void AWeapon::Equip(USceneComponent* InParentComponent, const FName SocketName) const
+{
+    const FAttachmentTransformRules TransformRules(EAttachmentRule::SnapToTarget,
+                                                   EAttachmentRule::SnapToTarget,
+                                                   EAttachmentRule::SnapToTarget,
+                                                   false);
+    ItemMesh->AttachToComponent(InParentComponent, TransformRules, SocketName);
+}
+
+// #endregion

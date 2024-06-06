@@ -1,5 +1,6 @@
 #include "Items/Item.h"
 
+#include "Characters/SlashCharacter.h"
 #include "Components/SphereComponent.h"
 
 // #region Constructors
@@ -39,24 +40,22 @@ float AItem::TransformCos() const
 }
 
 void AItem::OnSphereOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
-    UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+                            UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep,
+                            const FHitResult& SweepResult)
 {
-    const FString OtherActorName = OtherActor->GetName() + " On Begin Overlap";
-    if (GEngine)
+    if (ASlashCharacter* SlashCharacter = Cast<ASlashCharacter>(OtherActor))
     {
-        GEngine->AddOnScreenDebugMessage(1, 3.f, FColor::Red, OtherActorName);
+        SlashCharacter->SetOverlappingItem(this);
     }
-    
 }
 
 void AItem::OnSphereEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
-    UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
+                               UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
 {
-    const FString OtherActorName = OtherActor->GetName() + " End Overlap";
-    if (GEngine)
+    if (ASlashCharacter* SlashCharacter = Cast<ASlashCharacter>(OtherActor))
     {
-        GEngine->AddOnScreenDebugMessage(1, 3.f, FColor::Red, OtherActorName);
-    } 
+        SlashCharacter->SetOverlappingItem(nullptr);
+    }
 }
 
 // #endregion
