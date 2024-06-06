@@ -111,4 +111,9 @@ void ASlashCharacter::Tick(const float DeltaTime)
     Super::Tick(DeltaTime);
 }
 
+FName ASlashCharacter::GetRightHandSocket() const
+{
+    return RightHandSocket;
+}
+
 // #endregion

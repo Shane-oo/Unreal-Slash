@@ -2,6 +2,8 @@
 
 #pragma once
 
+#include <string>
+
 #include "CoreMinimal.h"
 #include "InputActionValue.h"
 #include "GameFramework/Character.h"
@@ -26,6 +28,8 @@ public:
 
     virtual void SetupPlayerInputComponent(UInputComponent* PlayerInputComponent) override;
 
+    [[nodiscard]] FName GetRightHandSocket() const;
+
 protected:
     virtual void BeginPlay() override;
 
@@ -44,6 +48,8 @@ protected:
     UInputAction* JumpAction;
 
 private:
+    FName RightHandSocket = FName("RightHandSocket");
+    
     UPROPERTY(VisibleAnywhere)
     USpringArmComponent* SpringArm;
 
