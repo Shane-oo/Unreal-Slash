@@ -2,9 +2,8 @@
 
 #pragma once
 
-#include <string>
-
 #include "CoreMinimal.h"
+#include "CharacterState.h"
 #include "InputActionValue.h"
 #include "GameFramework/Character.h"
 #include "SlashCharacter.generated.h"
@@ -33,6 +32,8 @@ public:
 
     FORCEINLINE void SetOverlappingItem(AItem* Item) { this->OverlappingItem = Item; };
 
+    FORCEINLINE ECharacterState GetCharacterState() const { return CharacterState; }
+
 protected:
     virtual void BeginPlay() override;
 
@@ -56,6 +57,8 @@ protected:
 
 private:
     FName RightHandSocket = FName("RightHandSocket");
+
+    ECharacterState CharacterState = ECharacterState::ECS_UnEquipped;
 
     UPROPERTY(VisibleInstanceOnly)
     AItem* OverlappingItem;

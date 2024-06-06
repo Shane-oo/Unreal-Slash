@@ -3,12 +3,12 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "CharacterTypes.h"
 #include "Animation/AnimInstance.h"
 #include "SlashAnimInstance.generated.h"
 
 class ASlashCharacter;
 class UCharacterMovementComponent;
-
 
 UCLASS()
 class SLASH_API USlashAnimInstance : public UAnimInstance
@@ -29,4 +29,6 @@ public:
 
     UPROPERTY(BlueprintReadOnly, Category="Movement")
     bool IsFalling;
+
+    ECharacterState CharacterState;
 };
