@@ -31,5 +31,5 @@ public:
     bool IsFalling;
 
     UPROPERTY(BlueprintReadOnly, Category="Movement|Character Sate")
-    ECharacterState CharacterState;
+    EEquippedState EquippedState;
 };
