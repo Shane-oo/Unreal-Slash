@@ -3,6 +3,18 @@
 #include "Characters/SlashCharacter.h"
 #include "Components/SphereComponent.h"
 
+// #region Private Methods
+
+void AItem::Hover(const float DeltaTime)
+{
+    constexpr int MovementRate = 75;
+    AddActorWorldRotation(FRotator(0, MovementRate * DeltaTime, 0));
+
+    AddActorWorldOffset(FVector(0.f, TransformCos(), TransformSin()));
+}
+
+// #endregion
+
 // #region Constructors
 AItem::AItem()
 {
@@ -70,13 +82,7 @@ void AItem::Tick(const float DeltaTime)
 
     RunningTime += DeltaTime;
 
-    /*
-     *  For now disable floating 
-        constexpr int MovementRate = 75;
-        AddActorWorldRotation(FRotator(0, MovementRate * DeltaTime, 0));
-
-        AddActorWorldOffset(FVector(0.f, TransformCos(), TransformSin()));
-    */
+    Hover(DeltaTime);
 }
 
 // #endregion

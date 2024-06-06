@@ -37,6 +37,11 @@ void ASlashCharacter::PlayAttackMontage() const
     }
 }
 
+bool ASlashCharacter::CanAttack() const
+{
+    return ActionState == EActionState::EAS_UnOccupied && CharacterState != ECharacterState::ECS_UnEquipped;
+}
+
 // #endregion
 
 // #region Constructors
@@ -125,11 +130,16 @@ void ASlashCharacter::EKeyPressed(const FInputActionValue& Value)
 
 void ASlashCharacter::Attack(const FInputActionValue& Value)
 {
-    if(ActionState == EActionState::EAS_UnOccupied)
+    if (CanAttack())
     {
         ActionState = EActionState::EAS_Attacking;
         PlayAttackMontage();
     }
+}
+
+void ASlashCharacter::AttackEnd()
+{
+    ActionState = EActionState::EAS_UnOccupied;
 }
 
 // #endregion

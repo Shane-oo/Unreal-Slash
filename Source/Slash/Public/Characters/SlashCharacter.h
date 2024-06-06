@@ -61,11 +61,17 @@ protected:
     UInputAction* AttackAction;
     void Attack(const FInputActionValue& Value);
 
+    UFUNCTION(BlueprintCallable)
+    void AttackEnd();
+
 private:
+    bool CanAttack() const;
+
     FName RightHandSocket = FName("RightHandSocket");
 
     ECharacterState CharacterState = ECharacterState::ECS_UnEquipped;
 
+    UPROPERTY(BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
     EActionState ActionState = EActionState::EAS_UnOccupied;
 
     UPROPERTY(VisibleInstanceOnly)
