@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "ItemState.h"
 #include "GameFramework/Actor.h"
 #include "Item.generated.h"
 
@@ -19,6 +20,8 @@ public:
     virtual void Tick(float DeltaTime) override;
 
 protected:
+    EItemState ItemState = EItemState::EIS_Hovering;
+
     // Called when the game starts or when spawned
     virtual void BeginPlay() override;
 

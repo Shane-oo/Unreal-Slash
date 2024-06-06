@@ -13,7 +13,7 @@ class SLASH_API AWeapon : public AItem
     GENERATED_BODY()
 
 public:
-    void Equip(USceneComponent* InParentComponent, FName SocketName) const;
+    void Equip(USceneComponent* InParentComponent, FName SocketName);
 
 protected:
     virtual void OnSphereOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,

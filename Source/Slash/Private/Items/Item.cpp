@@ -82,7 +82,10 @@ void AItem::Tick(const float DeltaTime)
 
     RunningTime += DeltaTime;
 
-    Hover(DeltaTime);
+    if(ItemState == EItemState::EIS_Hovering)
+    {
+        Hover(DeltaTime);
+    }
 }
 
 // #endregion

@@ -98,6 +98,12 @@ void ASlashCharacter::BeginPlay()
 
 void ASlashCharacter::Move(const FInputActionValue& Value)
 {
+    if (ActionState == EActionState::EAS_Attacking)
+    {
+        // can't move while attacking
+        return;
+    }
+
     const FVector2D MovementVector = Value.Get<FVector2D>();
 
     const FRotator Rotation = GetControlRotation();
@@ -122,7 +128,7 @@ void ASlashCharacter::Look(const FInputActionValue& Value)
 
 void ASlashCharacter::EKeyPressed(const FInputActionValue& Value)
 {
-    if (const AWeapon* OverlappingWeapon = Cast<AWeapon>(OverlappingItem))
+    if (AWeapon* OverlappingWeapon = Cast<AWeapon>(OverlappingItem))
     {
         OverlappingWeapon->Equip(GetMesh(), RightHandSocket);
         EquippedState = EEquippedState::EES_EquippedOneHandedWeapon;
