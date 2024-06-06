@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "ActionState.h"
 #include "CharacterState.h"
 #include "InputActionValue.h"
 #include "GameFramework/Character.h"
@@ -65,6 +66,8 @@ private:
 
     ECharacterState CharacterState = ECharacterState::ECS_UnEquipped;
 
+    EActionState ActionState = EActionState::EAS_UnOccupied;
+
     UPROPERTY(VisibleInstanceOnly)
     AItem* OverlappingItem;
 
@@ -87,4 +90,6 @@ private:
 
     UPROPERTY(EditDefaultsOnly, Category = "Montages")
     UAnimMontage* AttackMontage;
+
+    void PlayAttackMontage() const;
 };

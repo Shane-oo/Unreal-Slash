@@ -14,6 +14,29 @@
 
 // #region Private Methods
 
+void ASlashCharacter::PlayAttackMontage() const
+{
+    if (UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance(); AnimInstance
+        && AttackMontage)
+    {
+        AnimInstance->Montage_Play(AttackMontage);
+        FName SectionName = FName();
+
+        switch (FMath::RandRange(0, 1))
+        {
+        case 0:
+            SectionName = Attack1;
+            break;
+        case 1:
+            SectionName = Attack2;
+            break;
+        default:
+            break;
+        }
+        AnimInstance->Montage_JumpToSection(SectionName);
+    }
+}
+
 // #endregion
 
 // #region Constructors
@@ -102,24 +125,10 @@ void ASlashCharacter::EKeyPressed(const FInputActionValue& Value)
 
 void ASlashCharacter::Attack(const FInputActionValue& Value)
 {
-    if (UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance(); AnimInstance
-        && AttackMontage)
+    if(ActionState == EActionState::EAS_UnOccupied)
     {
-        AnimInstance->Montage_Play(AttackMontage);
-        FName SectionName = FName();
-
-        switch (FMath::RandRange(0, 1))
-        {
-        case 0:
-            SectionName = Attack1;
-            break;
-        case 1:
-            SectionName = Attack2;
-            break;
-        default:
-            break;
-        }
-        AnimInstance->Montage_JumpToSection(SectionName);
+        ActionState = EActionState::EAS_Attacking;
+        PlayAttackMontage();
     }
 }
 
@@ -139,7 +148,6 @@ void ASlashCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComp
         EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Triggered, this, &ACharacter::Jump);
         EnhancedInputComponent->BindAction(EquipAction, ETriggerEvent::Triggered, this, &ASlashCharacter::EKeyPressed);
         EnhancedInputComponent->BindAction(AttackAction, ETriggerEvent::Triggered, this, &ASlashCharacter::Attack);
-
     }
 }
 
