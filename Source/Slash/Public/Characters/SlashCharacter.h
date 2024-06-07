@@ -75,6 +75,9 @@ protected:
     UFUNCTION(BlueprintCallable)
     void Arm();
 
+    UFUNCTION(BlueprintCallable)
+    void FinishedEquipping();
+
 private:
     bool CanAttack() const;
 

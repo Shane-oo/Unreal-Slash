@@ -120,9 +120,9 @@ void ASlashCharacter::BeginPlay()
 
 void ASlashCharacter::Move(const FInputActionValue& Value)
 {
-    if (ActionState == EActionState::EAS_Attacking)
+    if (ActionState != EActionState::EAS_UnOccupied)
     {
-        // can't move while attacking
+        // can't move while attacking or equipping
         return;
     }
 
@@ -166,11 +166,13 @@ void ASlashCharacter::Equip(const FInputActionValue& Value)
     {
         PlayEquipMontage(UnEquipSection);
         EquippedState = EEquippedState::EES_UnEquipped;
+        ActionState = EActionState::EAS_EquippingWeapon;
     }
     else if (CanArm())
     {
         PlayEquipMontage(EquipSection);
         EquippedState = EEquippedState::EES_EquippedOneHandedWeapon;
+        ActionState = EActionState::EAS_EquippingWeapon;
     }
 }
 
@@ -203,6 +205,11 @@ void ASlashCharacter::Arm()
     {
         EquippedWeapon->AttachMeshToSocket(GetMesh(), RightHandSocket);
     }
+}
+
+void ASlashCharacter::FinishedEquipping()
+{
+    ActionState = EActionState::EAS_UnOccupied;
 }
 
 // #endregion
