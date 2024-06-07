@@ -26,10 +26,10 @@ void ASlashCharacter::PlayAttackMontage() const
         switch (FMath::RandRange(0, 1))
         {
         case 0:
-            SectionName = Attack1;
+            SectionName = Attack1Section;
             break;
         case 1:
-            SectionName = Attack2;
+            SectionName = Attack2Section;
             break;
         default:
             break;
@@ -38,9 +38,31 @@ void ASlashCharacter::PlayAttackMontage() const
     }
 }
 
+void ASlashCharacter::PlayEquipMontage(const FName SectionName)
+{
+    if (UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance(); AnimInstance
+        && EquipMontage)
+    {
+        AnimInstance->Montage_Play(EquipMontage);
+        AnimInstance->Montage_JumpToSection(SectionName);
+    }
+}
+
 bool ASlashCharacter::CanAttack() const
 {
     return ActionState == EActionState::EAS_UnOccupied && EquippedState != EEquippedState::EES_UnEquipped;
+}
+
+bool ASlashCharacter::CanDisarm() const
+{
+    return ActionState == EActionState::EAS_UnOccupied && EquippedState != EEquippedState::EES_UnEquipped;
+}
+
+bool ASlashCharacter::CanArm() const
+{
+    return ActionState == EActionState::EAS_UnOccupied
+        && EquippedState == EEquippedState::EES_UnEquipped
+        && EquippedWeapon;
 }
 
 // #endregion
@@ -126,14 +148,32 @@ void ASlashCharacter::Look(const FInputActionValue& Value)
     AddControllerPitchInput(LookAxisVector.Y);
 }
 
-void ASlashCharacter::EKeyPressed(const FInputActionValue& Value)
+void ASlashCharacter::PickUp(const FInputActionValue& Value)
 {
     if (AWeapon* OverlappingWeapon = Cast<AWeapon>(OverlappingItem))
     {
         OverlappingWeapon->Equip(GetMesh(), RightHandSocket);
+
+        EquippedState = EEquippedState::EES_EquippedOneHandedWeapon;
+        EquippedWeapon = OverlappingWeapon;
+        OverlappingItem = nullptr;
+    }
+}
+
+void ASlashCharacter::Equip(const FInputActionValue& Value)
+{
+    if (CanDisarm())
+    {
+        PlayEquipMontage(UnEquipSection);
+        EquippedState = EEquippedState::EES_UnEquipped;
+    }
+    else if (CanArm())
+    {
+        PlayEquipMontage(EquipSection);
         EquippedState = EEquippedState::EES_EquippedOneHandedWeapon;
     }
 }
+
 
 void ASlashCharacter::Attack(const FInputActionValue& Value)
 {
@@ -163,8 +203,9 @@ void ASlashCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComp
         EnhancedInputComponent->BindAction(MovementAction, ETriggerEvent::Triggered, this, &ASlashCharacter::Move);
         EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &ASlashCharacter::Look);
         EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Triggered, this, &ACharacter::Jump);
-        EnhancedInputComponent->BindAction(EquipAction, ETriggerEvent::Triggered, this, &ASlashCharacter::EKeyPressed);
+        EnhancedInputComponent->BindAction(PickUpAction, ETriggerEvent::Triggered, this, &ASlashCharacter::PickUp);
         EnhancedInputComponent->BindAction(AttackAction, ETriggerEvent::Triggered, this, &ASlashCharacter::Attack);
+        EnhancedInputComponent->BindAction(EquipAction, ETriggerEvent::Triggered, this, &ASlashCharacter::Equip);
     }
 }
 

@@ -17,6 +17,7 @@ class USpringArmComponent;
 class UGroomComponent;
 class AItem;
 class UAnimMontage;
+class AWeapon;
 
 UCLASS()
 class SLASH_API ASlashCharacter : public ACharacter
@@ -54,8 +55,8 @@ protected:
     UInputAction* JumpAction;
 
     UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Input|Action")
-    UInputAction* EquipAction;
-    void EKeyPressed(const FInputActionValue& Value);
+    UInputAction* PickUpAction;
+    void PickUp(const FInputActionValue& Value);
 
     UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Input|Action")
     UInputAction* AttackAction;
@@ -64,8 +65,16 @@ protected:
     UFUNCTION(BlueprintCallable)
     void AttackEnd();
 
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Input|Action")
+    UInputAction* EquipAction;
+    void Equip(const FInputActionValue& Value);
+
 private:
     bool CanAttack() const;
+
+    bool CanDisarm() const;
+
+    bool CanArm() const;
 
     FName RightHandSocket = FName("RightHandSocket");
 
@@ -89,13 +98,25 @@ private:
     UPROPERTY(VisibleAnywhere, Category = "Hair")
     UGroomComponent* Eyebrows;
 
-    // Animation Montages
-    FName Attack1 = FName("Attack1");
+    UPROPERTY(VisibleAnywhere, Category= "Weapon")
+    AWeapon* EquippedWeapon;
 
-    FName Attack2 = FName("Attack2");
+    // Animation Montages
+    FName Attack1Section = FName("Attack1");
+
+    FName Attack2Section = FName("Attack2");
 
     UPROPERTY(EditDefaultsOnly, Category = "Montages")
     UAnimMontage* AttackMontage;
 
     void PlayAttackMontage() const;
+
+    FName EquipSection = FName("Equip");
+
+    FName UnEquipSection = FName("UnEquip");
+
+    UPROPERTY(EditDefaultsOnly, Category = "Montages")
+    UAnimMontage* EquipMontage;
+
+    void PlayEquipMontage(FName SectionName);
 };
