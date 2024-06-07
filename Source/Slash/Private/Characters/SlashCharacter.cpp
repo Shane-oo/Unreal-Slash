@@ -189,6 +189,22 @@ void ASlashCharacter::AttackEnd()
     ActionState = EActionState::EAS_UnOccupied;
 }
 
+void ASlashCharacter::Disarm()
+{
+    if (EquippedWeapon)
+    {
+        EquippedWeapon->AttachMeshToSocket(GetMesh(), SpineSocket);
+    }
+}
+
+void ASlashCharacter::Arm()
+{
+    if (EquippedWeapon)
+    {
+        EquippedWeapon->AttachMeshToSocket(GetMesh(), RightHandSocket);
+    }
+}
+
 // #endregion
 
 // #region Public Methods

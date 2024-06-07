@@ -62,12 +62,18 @@ protected:
     UInputAction* AttackAction;
     void Attack(const FInputActionValue& Value);
 
-    UFUNCTION(BlueprintCallable)
-    void AttackEnd();
-
     UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Input|Action")
     UInputAction* EquipAction;
     void Equip(const FInputActionValue& Value);
+
+    UFUNCTION(BlueprintCallable)
+    void AttackEnd();
+
+    UFUNCTION(BlueprintCallable)
+    void Disarm();
+
+    UFUNCTION(BlueprintCallable)
+    void Arm();
 
 private:
     bool CanAttack() const;
@@ -77,6 +83,8 @@ private:
     bool CanArm() const;
 
     FName RightHandSocket = FName("RightHandSocket");
+
+    FName SpineSocket = FName("SpineSocket");
 
     EEquippedState EquippedState = EEquippedState::EES_UnEquipped;
 
