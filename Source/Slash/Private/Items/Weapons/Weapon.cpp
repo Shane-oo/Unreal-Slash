@@ -1,10 +1,8 @@
 #include "Items/Weapons/Weapon.h"
-
-#include "Characters/SlashCharacter.h"
+#include "Components/SphereComponent.h"
+#include "Kismet/GameplayStatics.h"
 
 // #region Private Methods
-
-
 
 
 // #endregion
@@ -41,8 +39,18 @@ void AWeapon::Equip(USceneComponent* InParentComponent, const FName SocketName)
 {
     AttachMeshToSocket(InParentComponent, SocketName);
     ItemState = EItemState::EIS_Equipped;
-}
 
+    if (EquipSound)
+    {
+        UGameplayStatics::PlaySoundAtLocation(this, EquipSound, GetActorLocation());
+    }
+
+    // Disable Collisions with Weapon after Equipping
+    if (SphereComponent)
+    {
+        SphereComponent->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+    }
+}
 
 
 // #endregion

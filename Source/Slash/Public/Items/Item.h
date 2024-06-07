@@ -50,14 +50,15 @@ protected:
 
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
     UStaticMeshComponent* ItemMesh;
+
+    UPROPERTY(VisibleAnywhere)
+    USphereComponent* SphereComponent;
+
 private:
     void Hover(float DeltaTime);
 
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
     float RunningTime = 0.f;
-
-    UPROPERTY(VisibleAnywhere)
-    USphereComponent* SphereComponent;
 };
 
 template <typename T>
