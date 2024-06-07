@@ -117,6 +117,8 @@ private:
 
     FName Attack2Section = FName("Attack2");
 
+    FName Attack3Section = FName("Attack3");
+
     UPROPERTY(EditDefaultsOnly, Category = "Montages")
     UAnimMontage* AttackMontage;
 

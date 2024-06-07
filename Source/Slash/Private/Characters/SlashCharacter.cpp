@@ -21,20 +21,24 @@ void ASlashCharacter::PlayAttackMontage() const
         && AttackMontage)
     {
         AnimInstance->Montage_Play(AttackMontage);
-        FName SectionName = FName();
+        FName AttackSection = FName();
 
         switch (FMath::RandRange(0, 1))
         {
         case 0:
-            SectionName = Attack1Section;
+            AttackSection = Attack1Section;
             break;
         case 1:
-            SectionName = Attack2Section;
+            AttackSection = Attack2Section;
+            break;
+        case 3:
+            AttackSection = Attack3Section;
             break;
         default:
             break;
         }
-        AnimInstance->Montage_JumpToSection(SectionName);
+
+        AnimInstance->Montage_JumpToSection(AttackSection);
     }
 }
 
