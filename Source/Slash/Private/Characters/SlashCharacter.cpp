@@ -23,7 +23,7 @@ void ASlashCharacter::PlayAttackMontage() const
         AnimInstance->Montage_Play(AttackMontage);
         FName AttackSection = FName();
 
-        switch (FMath::RandRange(0, 1))
+        switch (FMath::RandRange(0, 2))
         {
         case 0:
             AttackSection = Attack1Section;
@@ -31,7 +31,7 @@ void ASlashCharacter::PlayAttackMontage() const
         case 1:
             AttackSection = Attack2Section;
             break;
-        case 3:
+        case 2:
             AttackSection = Attack3Section;
             break;
         default:
