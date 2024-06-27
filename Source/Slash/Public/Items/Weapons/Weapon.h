@@ -21,6 +21,8 @@ public:
 
     void AttachMeshToSocket(USceneComponent* InParentComponent, FName SocketName) const;
 
+    void SetWeaponCollisionEnabled(ECollisionEnabled::Type CollisionEnabled) const;
+
 protected:
     virtual void BeginPlay() override;
 

@@ -108,6 +108,7 @@ ASlashCharacter::ASlashCharacter()
 
 // #region Protected Methods
 
+
 void ASlashCharacter::BeginPlay()
 {
     Super::BeginPlay();
@@ -239,6 +240,14 @@ void ASlashCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComp
 void ASlashCharacter::Tick(const float DeltaTime)
 {
     Super::Tick(DeltaTime);
+}
+
+void ASlashCharacter::SetWeaponCollisionEnabled(ECollisionEnabled::Type CollisionEnabled)
+{
+    if (EquippedWeapon)
+    {
+        EquippedWeapon->SetWeaponCollisionEnabled(CollisionEnabled);
+    }
 }
 
 // #endregion

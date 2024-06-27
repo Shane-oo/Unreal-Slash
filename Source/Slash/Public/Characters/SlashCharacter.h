@@ -37,6 +37,9 @@ public:
 
     FORCEINLINE EEquippedState GetCharacterState() const { return EquippedState; }
 
+    UFUNCTION(BlueprintCallable)
+    void SetWeaponCollisionEnabled(ECollisionEnabled::Type CollisionEnabled);
+
 protected:
     virtual void BeginPlay() override;
 
