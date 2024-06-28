@@ -62,8 +62,7 @@ void AWeapon::OnBoxOverlap(UPrimitiveComponent* OverlappedComponent, AActor* Oth
     const FVector End = BoxTraceEnd->GetComponentLocation();
 
     // Dont hit weapon itself
-    TArray<AActor*> ActorsToIgnore;
-    ActorsToIgnore.Add(this);
+    ActorsToIgnore.AddUnique(this);
 
     FHitResult BoxHit;
 
@@ -86,6 +85,8 @@ void AWeapon::OnBoxOverlap(UPrimitiveComponent* OverlappedComponent, AActor* Oth
         if (IHit* HitActor = Cast<IHit>(BoxHitActor))
         {
             HitActor->GetHit(BoxHit.ImpactPoint);
+
+            ActorsToIgnore.AddUnique(BoxHitActor);
         }
     }
 }
@@ -121,11 +122,15 @@ void AWeapon::Equip(USceneComponent* InParentComponent, const FName SocketName)
     }
 }
 
-void AWeapon::SetWeaponCollisionEnabled(const ECollisionEnabled::Type CollisionEnabled) const
+void AWeapon::SetWeaponCollisionEnabled(const ECollisionEnabled::Type CollisionEnabled)
 {
     if (WeaponBox)
     {
         WeaponBox->SetCollisionEnabled(CollisionEnabled);
+        if (CollisionEnabled == ECollisionEnabled::NoCollision)
+        {
+            ActorsToIgnore.Empty();
+        }
     }
 }
 

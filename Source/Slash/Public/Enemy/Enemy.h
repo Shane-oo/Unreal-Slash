@@ -27,6 +27,8 @@ protected:
     virtual void BeginPlay() override;
 
 private:
+    double GetHitAngle(const FVector& ImpactPoint) const;
+
     // Animation Montages
     FName FromRightSection = FName("FromRight");
     FName FromLeftSection = FName("FromLeft");
@@ -36,5 +38,6 @@ private:
     UPROPERTY(EditDefaultsOnly, Category = "Montages")
     UAnimMontage* HitReactMontage;
 
-    void PlayHitReactMontage(const FName& SectionName) const;
+    void PlayHitReactMontage(const float& Angle) const;
+
 };

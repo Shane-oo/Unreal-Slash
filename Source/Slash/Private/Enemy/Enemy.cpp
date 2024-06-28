@@ -10,13 +10,46 @@
 
 // #region Private Methods
 
-void AEnemy::PlayHitReactMontage(const FName& SectionName) const
+double AEnemy::GetHitAngle(const FVector& ImpactPoint) const
 {
+    const FVector NormalizedForward = GetActorForwardVector();
+    // Lower Impact Point to the Enemy's Actor Location Z
+    const FVector ImpactLowered(ImpactPoint.X, ImpactPoint.Y, GetActorLocation().Z);
+    const FVector NormalizedToHit = (ImpactLowered - GetActorLocation()).GetSafeNormal();
+
+    const double CosTheta = FVector::DotProduct(NormalizedForward, NormalizedToHit);
+    double Angle = FMath::RadiansToDegrees(FMath::Acos(CosTheta));
+
+    // if CrossProduct points down, Theta should be Negative
+    if (const FVector CrossProduct = FVector::CrossProduct(NormalizedForward, NormalizedToHit); CrossProduct.Z < 0)
+    {
+        Angle *= -1.f;
+    }
+
+    return Angle;
+}
+
+void AEnemy::PlayHitReactMontage(const float& Angle) const
+{
+    FName HitReactSection = FromBackSection;
+    if (Angle >= -45.f && Angle < 45.f)
+    {
+        HitReactSection = FromFrontSection;
+    }
+    else if (Angle >= -135.f && Angle < -45.f)
+    {
+        HitReactSection = FromLeftSection;
+    }
+    else if (Angle >= 45.f && Angle < 135.f)
+    {
+        HitReactSection = FromRightSection;
+    }
+
     if (UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance(); AnimInstance
         && HitReactMontage)
     {
         AnimInstance->Montage_Play(HitReactMontage);
-        AnimInstance->Montage_JumpToSection(SectionName);
+        AnimInstance->Montage_JumpToSection(HitReactSection);
     }
 }
 
@@ -62,38 +95,11 @@ void AEnemy::Tick(float DeltaTime)
     Super::Tick(DeltaTime);
 }
 
+
 void AEnemy::GetHit(const FVector& ImpactPoint)
 {
-    const FVector NormalizedForward = GetActorForwardVector();
-    // Lower Impact Point to the Enemy's Actor Location Z
-    const FVector ImpactLowered(ImpactPoint.X, ImpactPoint.Y, GetActorLocation().Z);
-    const FVector NormalizedToHit = (ImpactLowered - GetActorLocation()).GetSafeNormal();
-
-    const double CosTheta = FVector::DotProduct(NormalizedForward, NormalizedToHit);
-    double Angle = FMath::RadiansToDegrees(FMath::Acos(CosTheta));
-
-    // if CrossProduct points down, Theta should be Negative
-    if (const FVector CrossProduct = FVector::CrossProduct(NormalizedForward, NormalizedToHit); CrossProduct.Z < 0)
-    {
-        Angle *= -1.f;
-    }
-
-    if (Angle >= -45.f && Angle < 45.f)
-    {
-        PlayHitReactMontage(FromFrontSection);
-    }
-    else if (Angle >= -135.f && Angle < -45.f)
-    {
-        PlayHitReactMontage(FromLeftSection);
-    }
-    else if (Angle >= 45.f && Angle < 135.f)
-    {
-        PlayHitReactMontage(FromRightSection);
-    }
-    else
-    {
-        PlayHitReactMontage(FromBackSection);
-    }
+    const double HitAngle = GetHitAngle(ImpactPoint);
+    PlayHitReactMontage(HitAngle);
 }
 
 // #endregion

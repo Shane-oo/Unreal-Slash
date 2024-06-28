@@ -21,7 +21,7 @@ public:
 
     void AttachMeshToSocket(USceneComponent* InParentComponent, FName SocketName) const;
 
-    void SetWeaponCollisionEnabled(ECollisionEnabled::Type CollisionEnabled) const;
+    void SetWeaponCollisionEnabled(ECollisionEnabled::Type CollisionEnabled);
 
 protected:
     virtual void BeginPlay() override;
@@ -50,4 +50,7 @@ private:
 
     UPROPERTY(VisibleAnywhere)
     USceneComponent* BoxTraceEnd;
+
+    UPROPERTY()
+    TArray<AActor*> ActorsToIgnore;
 };

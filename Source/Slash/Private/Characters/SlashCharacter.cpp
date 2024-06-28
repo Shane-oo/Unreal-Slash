@@ -242,7 +242,7 @@ void ASlashCharacter::Tick(const float DeltaTime)
     Super::Tick(DeltaTime);
 }
 
-void ASlashCharacter::SetWeaponCollisionEnabled(ECollisionEnabled::Type CollisionEnabled)
+void ASlashCharacter::SetWeaponCollisionEnabled(const ECollisionEnabled::Type CollisionEnabled) const
 {
     if (EquippedWeapon)
     {
