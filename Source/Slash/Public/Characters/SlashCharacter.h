@@ -134,5 +134,5 @@ private:
     UPROPERTY(EditDefaultsOnly, Category = "Montages")
     UAnimMontage* EquipMontage;
 
-    void PlayEquipMontage(FName SectionName);
+    void PlayEquipMontage(const FName& SectionName) const;
 };

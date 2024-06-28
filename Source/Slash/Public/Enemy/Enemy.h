@@ -7,6 +7,8 @@
 #include "Interfaces/Hit.h"
 #include "Enemy.generated.h"
 
+class UAnimMontage;
+
 UCLASS()
 class SLASH_API AEnemy : public ACharacter, public IHit
 {
@@ -20,6 +22,19 @@ public:
     virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
     virtual void GetHit(const FVector& ImpactPoint) override;
+
 protected:
     virtual void BeginPlay() override;
+
+private:
+    // Animation Montages
+    FName FromRightSection = FName("FromRight");
+    FName FromLeftSection = FName("FromLeft");
+    FName FromFrontSection = FName("FromFront");
+    FName FromBackSection = FName("FromBack");
+
+    UPROPERTY(EditDefaultsOnly, Category = "Montages")
+    UAnimMontage* HitReactMontage;
+
+    void PlayHitReactMontage(const FName& SectionName) const;
 };

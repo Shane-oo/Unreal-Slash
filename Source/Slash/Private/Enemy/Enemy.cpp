@@ -7,6 +7,19 @@
 #include "Components/CapsuleComponent.h"
 #include "Slash/DebugMacros.h"
 
+// #region Private Methods
+
+void AEnemy::PlayHitReactMontage(const FName& SectionName) const
+{
+    if (UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance(); AnimInstance
+        && HitReactMontage)
+    {
+        AnimInstance->Montage_Play(HitReactMontage);
+        AnimInstance->Montage_JumpToSection(SectionName);
+    }
+}
+
+// #endregion
 
 // #region Constructors
 
@@ -51,6 +64,7 @@ void AEnemy::Tick(float DeltaTime)
 void AEnemy::GetHit(const FVector& ImpactPoint)
 {
     DRAW_SPHERE_WITH_PARAMS(ImpactPoint, FColor::Purple, 5.0f);
+    PlayHitReactMontage(FromLeftSection);
 }
 
 // #endregion
