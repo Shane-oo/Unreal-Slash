@@ -2,17 +2,11 @@
 
 
 #include "Enemy/Enemy.h"
+#include "DrawDebugHelpers.h"
 
 #include "Components/CapsuleComponent.h"
+#include "Slash/DebugMacros.h"
 
-// #region Protected Methods
-
-void AEnemy::BeginPlay()
-{
-    Super::BeginPlay();
-}
-
-// #endregion
 
 // #region Constructors
 
@@ -33,6 +27,15 @@ AEnemy::AEnemy()
 
 // #endregion
 
+// #region Protected Methods
+
+void AEnemy::BeginPlay()
+{
+    Super::BeginPlay();
+}
+
+// #endregion
+
 // #region Public Methods
 
 void AEnemy::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
@@ -45,10 +48,9 @@ void AEnemy::Tick(float DeltaTime)
     Super::Tick(DeltaTime);
 }
 
-void AEnemy::GetHit()
+void AEnemy::GetHit(const FVector& ImpactPoint)
 {
-    
+    DRAW_SPHERE_WITH_PARAMS(ImpactPoint, FColor::Purple, 5.0f);
 }
-
 
 // #endregion

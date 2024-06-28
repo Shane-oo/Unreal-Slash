@@ -2,6 +2,7 @@
 #include "DrawDebugHelpers.h"
 
 #define DRAW_SPHERE(Location) if(const UWorld* World = GetWorld()) DrawDebugSphere(World, Location, 25.f, 12, FColor::Red, true);
+#define DRAW_SPHERE_WITH_PARAMS(Location, Colour, Time)  if(const UWorld* World = GetWorld()) DrawDebugSphere(World, Location, 8.f, 12, Colour, false, Time);
 #define DRAW_SPHERE_SINGLE_FRAME(Location) if(const UWorld* World = GetWorld()) DrawDebugSphere(World, Location, 25.f, 12, FColor::Red, false, -1.f);
 #define DRAW_LINE(StartLocation, EndLocation) if(const UWorld* World = GetWorld()) DrawDebugLine(World, StartLocation, EndLocation, FColor::Red, true, -1.f, 0, 1.f);
 #define DRAW_LINE_SINGLE_FRAME(StartLocation, EndLocation) if(const UWorld* World = GetWorld()) DrawDebugLine(World, StartLocation, EndLocation, FColor::Red, false, -1.f, 0, 1.f);
