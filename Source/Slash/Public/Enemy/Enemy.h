@@ -40,4 +40,6 @@ private:
 
     void PlayHitReactMontage(const float& Angle) const;
 
+    UPROPERTY(EditAnywhere, Category = "Sounds")
+    USoundBase* HitSound;
 };

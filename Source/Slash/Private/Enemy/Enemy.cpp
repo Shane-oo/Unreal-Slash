@@ -5,8 +5,8 @@
 #include "DrawDebugHelpers.h"
 
 #include "Components/CapsuleComponent.h"
-#include "Slash/DebugMacros.h"
-#include "Kismet/KismetSystemLibrary.h"
+#include "Kismet/GameplayStatics.h"
+
 
 // #region Private Methods
 
@@ -100,6 +100,11 @@ void AEnemy::GetHit(const FVector& ImpactPoint)
 {
     const double HitAngle = GetHitAngle(ImpactPoint);
     PlayHitReactMontage(HitAngle);
+
+    if (HitSound)
+    {
+        UGameplayStatics::PlaySoundAtLocation(this, HitSound, ImpactPoint);
+    }
 }
 
 // #endregion
